@@ -1,6 +1,6 @@
 // src/pages/Devices.js
 import React, { useEffect, useState } from 'react';
-import './Devices.css';
+//import './Devices.css';
 
 function Devices() {
   const [devices, setDevices] = useState([]);
