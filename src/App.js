@@ -1,44 +1,81 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Devices from './pages/Devices';
 import './App.css';
 
-function App() {
-  const [active, setActive] = useState('home');
-
-  const renderSection = () => {
-    switch (active) {
-      case 'devices':
-        return <div><h2>Device Management</h2><p>View all registered endpoints, their OS, status, and security posture.</p></div>;
-      case 'patching':
-        return <div><h2>Patch Management</h2><p>Scan for missing patches, apply OS and 3rd-party software updates remotely.</p></div>;
-      case 'remote':
-        return <div><h2>Remote Access</h2><p>Launch terminal sessions, remote desktop or file manager from your browser using secure tunneling.</p></div>;
-      case 'security':
-        return <div><h2>Security Integrations</h2><p>Monitor threat alerts and antivirus health via SentinelOne or Bitdefender APIs.</p></div>;
-      case 'contact':
-        return <div><h2>Contact Us</h2><p>Email: support@veytrax.com<br/>Phone: +44 1234 567890</p></div>;
-      default:
-        return <div><h2>Welcome to Veytrax RMM</h2><p>Your all-in-one ITSM + Remote Management platform.</p></div>;
-    }
-  };
-
+function Home() {
   return (
-    <div className="App">
-      <header>
-        <h1>Veytrax</h1>
-        <nav>
-          <a onClick={() => setActive('home')}>Home</a>
-          <a onClick={() => setActive('devices')}>Devices</a>
-          <a onClick={() => setActive('patching')}>Patching</a>
-          <a onClick={() => setActive('remote')}>Remote Access</a>
-          <a onClick={() => setActive('security')}>Security</a>
-          <a onClick={() => setActive('contact')}>Contact</a>
-        </nav>
-      </header>
-      <main>
-        {renderSection()}
-      </main>
-      <footer>&copy; 2025 Veytrax. All rights reserved.</footer>
+    <div>
+      <h2>Welcome to Veytrax RMM</h2>
+      <p>Your all-in-one ITSM + Remote Management platform.</p>
     </div>
+  );
+}
+
+function Patching() {
+  return (
+    <div>
+      <h2>Patch Management</h2>
+      <p>Scan for missing patches, apply OS and 3rd-party software updates remotely.</p>
+    </div>
+  );
+}
+
+function Remote() {
+  return (
+    <div>
+      <h2>Remote Access</h2>
+      <p>Launch terminal sessions, remote desktop or file manager from your browser using secure tunneling.</p>
+    </div>
+  );
+}
+
+function Security() {
+  return (
+    <div>
+      <h2>Security Integrations</h2>
+      <p>Monitor threat alerts and antivirus health via SentinelOne or Bitdefender APIs.</p>
+    </div>
+  );
+}
+
+function Contact() {
+  return (
+    <div>
+      <h2>Contact Us</h2>
+      <p>Email: support@veytrax.com<br/>Phone: +44 1234 567890</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <header>
+          <h1>Veytrax</h1>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/devices">Devices</Link>
+            <Link to="/patching">Patching</Link>
+            <Link to="/remote">Remote Access</Link>
+            <Link to="/security">Security</Link>
+            <Link to="/contact">Contact</Link>
+          </nav>
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/devices" element={<Devices />} />
+            <Route path="/patching" element={<Patching />} />
+            <Route path="/remote" element={<Remote />} />
+            <Route path="/security" element={<Security />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </main>
+        <footer>&copy; 2025 Veytrax. All rights reserved.</footer>
+      </div>
+    </Router>
   );
 }
 
