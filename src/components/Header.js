@@ -5,9 +5,9 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Drawer,
   Box,
   Link,
+  Collapse,
   useTheme,
   useMediaQuery
 } from '@mui/material';
@@ -22,43 +22,12 @@ const navItems = [
 ];
 
 const Header = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const toggleDrawer = () => setDrawerOpen(!drawerOpen);
-
-  const drawer = (
-    <Box
-      sx={{
-        width: '250px',
-        padding: 3,
-        height: '100%',
-        backgroundColor: theme.palette.background.default
-      }}
-      role="presentation"
-    >
-      <IconButton onClick={toggleDrawer} sx={{ float: 'right' }}>
-        <CloseIcon />
-      </IconButton>
-      <Box sx={{ mt: 6, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {navItems.map(({ label, path }) => (
-          <Link
-            key={path}
-            to={path}
-            component={RouterLink}
-            underline="none"
-            color={location.pathname === path ? 'primary.main' : 'text.primary'}
-            fontWeight={location.pathname === path ? 'bold' : 'normal'}
-            onClick={toggleDrawer}
-          >
-            {label}
-          </Link>
-        ))}
-      </Box>
-    </Box>
-  );
+  const toggleMenu = () => setMenuOpen(prev => !prev);
 
   return (
     <>
@@ -73,19 +42,38 @@ const Header = () => {
             color: theme.palette.text.primary
           }}
         >
-          <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Toolbar sx={{ minHeight: 48, px: 2 }}>
+            {/* Logo Placeholder */}
+            <Box
+              component="div"
+              sx={{
+                width: 32,
+                height: 32,
+                backgroundColor: 'grey.400',
+                borderRadius: '50%',
+                mr: 2
+              }}
+            />
+
+            {/* App Name */}
             <Typography
               variant="h6"
               component={RouterLink}
               to="/"
-              sx={{ textDecoration: 'none', color: 'inherit', fontWeight: 'bold' }}
+              sx={{
+                textDecoration: 'none',
+                color: 'inherit',
+                fontWeight: 'bold',
+                flexGrow: 1
+              }}
             >
               Hi5TechRMM
             </Typography>
 
+            {/* Nav or Hamburger */}
             {isMobile ? (
-              <IconButton edge="end" color="inherit" onClick={toggleDrawer}>
-                <MenuIcon />
+              <IconButton onClick={toggleMenu} color="inherit">
+                {menuOpen ? <CloseIcon /> : <MenuIcon />}
               </IconButton>
             ) : (
               <Box sx={{ display: 'flex', gap: 3 }}>
@@ -104,17 +92,36 @@ const Header = () => {
               </Box>
             )}
           </Toolbar>
+
+          {/* Mobile Drawer Below Header */}
+          <Collapse in={menuOpen} timeout="auto" unmountOnExit>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                px: 3,
+                py: 2,
+                backgroundColor: theme.palette.background.default
+              }}
+            >
+              {navItems.map(({ label, path }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  component={RouterLink}
+                  underline="none"
+                  onClick={toggleMenu}
+                  color={location.pathname === path ? 'primary.main' : 'text.primary'}
+                  fontWeight={location.pathname === path ? 'bold' : 'normal'}
+                >
+                  {label}
+                </Link>
+              ))}
+            </Box>
+          </Collapse>
         </AppBar>
       </Box>
-
-      <Drawer
-        anchor="right"
-        open={drawerOpen}
-        onClose={toggleDrawer}
-        ModalProps={{ keepMounted: true }}
-      >
-        {drawer}
-      </Drawer>
     </>
   );
 };
