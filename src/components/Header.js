@@ -1,118 +1,125 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Drawer,
+  Box,
+  Link,
+  useTheme,
+  useMediaQuery
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+
+const navItems = [
+  { label: 'Home', path: '/' },
+  { label: 'About', path: '/about' },
+  { label: 'Services', path: '/services' },
+  { label: 'Contact', path: '/contact' }
+];
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-  const closeMenu = () => setMenuOpen(false);
+  const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
-  const isActive = (path) => location.pathname === path;
+  const drawer = (
+    <Box
+      sx={{
+        width: '250px',
+        padding: 3,
+        height: '100%',
+        backgroundColor: theme.palette.background.default
+      }}
+      role="presentation"
+    >
+      <IconButton onClick={toggleDrawer} sx={{ float: 'right' }}>
+        <CloseIcon />
+      </IconButton>
+      <Box sx={{ mt: 6, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {navItems.map(({ label, path }) => (
+          <Link
+            key={path}
+            to={path}
+            component={RouterLink}
+            underline="none"
+            color={location.pathname === path ? 'primary.main' : 'text.primary'}
+            fontWeight={location.pathname === path ? 'bold' : 'normal'}
+            onClick={toggleDrawer}
+          >
+            {label}
+          </Link>
+        ))}
+      </Box>
+    </Box>
+  );
 
   return (
-    <header style={headerStyle}>
-      <div style={logoStyle}>Hi5TechRMM</div>
+    <>
+      <AppBar
+        position="fixed"
+        elevation={4}
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+          borderRadius: 2,
+          mt: 2,
+          mx: 'auto',
+          width: '90%',
+          zIndex: theme.zIndex.drawer + 1
+        }}
+      >
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography
+            variant="h6"
+            component={RouterLink}
+            to="/"
+            sx={{ textDecoration: 'none', color: 'text.primary', fontWeight: 'bold' }}
+          >
+            Hi5TechRMM
+          </Typography>
 
-      {/* Desktop nav */}
-      <nav style={navDesktopStyle}>
-        <NavLink to="/" label="Home" isActive={isActive('/')}/>
-        <NavLink to="/about" label="About" isActive={isActive('/about')} />
-        <NavLink to="/services" label="Services" isActive={isActive('/services')} />
-        <NavLink to="/contact" label="Contact" isActive={isActive('/contact')} />
-      </nav>
+          {isMobile ? (
+            <IconButton edge="end" color="inherit" onClick={toggleDrawer}>
+              <MenuIcon />
+            </IconButton>
+          ) : (
+            <Box sx={{ display: 'flex', gap: 3 }}>
+              {navItems.map(({ label, path }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  component={RouterLink}
+                  underline="none"
+                  color={location.pathname === path ? 'primary.main' : 'text.primary'}
+                  fontWeight={location.pathname === path ? 'bold' : 'normal'}
+                >
+                  {label}
+                </Link>
+              ))}
+            </Box>
+          )}
+        </Toolbar>
+      </AppBar>
 
-      {/* Hamburger */}
-      <button onClick={toggleMenu} style={hamburgerStyle}>
-        {menuOpen ? '×' : '☰'}
-      </button>
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={toggleDrawer}
+        ModalProps={{ keepMounted: true }}
+      >
+        {drawer}
+      </Drawer>
 
-      {/* Overlay menu */}
-      {menuOpen && (
-        <div style={overlayStyle}>
-          <nav style={overlayNavStyle}>
-            <NavLink to="/" label="Home" onClick={closeMenu} isActive={isActive('/')}/>
-            <NavLink to="/about" label="About" onClick={closeMenu} isActive={isActive('/about')} />
-            <NavLink to="/services" label="Services" onClick={closeMenu} isActive={isActive('/services')} />
-            <NavLink to="/contact" label="Contact" onClick={closeMenu} isActive={isActive('/contact')} />
-          </nav>
-        </div>
-      )}
-    </header>
+      {/* Space below AppBar */}
+      <Toolbar />
+    </>
   );
-};
-
-// Reusable link component
-const NavLink = ({ to, label, onClick, isActive }) => (
-  <Link
-    to={to}
-    onClick={onClick}
-    style={{
-      textDecoration: 'none',
-      color: isActive ? '#0bf' : '#fff',
-      fontWeight: isActive ? 'bold' : 'normal',
-      fontSize: '1.1rem',
-      transition: 'color 0.2s',
-      margin: '0 1rem',
-    }}
-  >
-    {label}
-  </Link>
-);
-
-// --- Styles ---
-const headerStyle = {
-  padding: '1rem',
-  background: '#222',
-  color: '#fff',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  position: 'relative',
-  zIndex: 999
-};
-
-const logoStyle = {
-  fontSize: '1.6rem',
-  fontWeight: 'bold'
-};
-
-const navDesktopStyle = {
-  display: 'none',
-};
-
-// Hamburger (always visible on small screens)
-const hamburgerStyle = {
-  fontSize: '1.8rem',
-  background: 'none',
-  border: 'none',
-  color: '#fff',
-  cursor: 'pointer'
-};
-
-// Fullscreen overlay
-const overlayStyle = {
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100vw',
-  height: '100vh',
-  background: 'rgba(0, 0, 0, 0.95)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  animation: 'fadeIn 0.3s ease',
-  zIndex: 1000
-};
-
-// Navigation inside overlay
-const overlayNavStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '2rem',
-  fontSize: '1.5rem'
 };
 
 export default Header;
