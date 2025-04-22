@@ -62,50 +62,50 @@ const Header = () => {
 
   return (
     <>
-      <AppBar
-        position="fixed"
-        elevation={4}
-        sx={{
-          backgroundColor: theme.palette.background.paper,
-          borderRadius: 2,
-          mt: 2,
-          mx: 'auto',
-          width: '90%',
-          zIndex: theme.zIndex.drawer + 1
-        }}
-      >
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography
-            variant="h6"
-            component={RouterLink}
-            to="/"
-            sx={{ textDecoration: 'none', color: 'text.primary', fontWeight: 'bold' }}
-          >
-            Hi5TechRMM
-          </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <AppBar
+          position="static"
+          elevation={4}
+          sx={{
+            width: '90%',
+            borderRadius: 3,
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary
+          }}
+        >
+          <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography
+              variant="h6"
+              component={RouterLink}
+              to="/"
+              sx={{ textDecoration: 'none', color: 'inherit', fontWeight: 'bold' }}
+            >
+              Hi5TechRMM
+            </Typography>
 
-          {isMobile ? (
-            <IconButton edge="end" color="inherit" onClick={toggleDrawer}>
-              <MenuIcon />
-            </IconButton>
-          ) : (
-            <Box sx={{ display: 'flex', gap: 3 }}>
-              {navItems.map(({ label, path }) => (
-                <Link
-                  key={path}
-                  to={path}
-                  component={RouterLink}
-                  underline="none"
-                  color={location.pathname === path ? 'primary.main' : 'text.primary'}
-                  fontWeight={location.pathname === path ? 'bold' : 'normal'}
-                >
-                  {label}
-                </Link>
-              ))}
-            </Box>
-          )}
-        </Toolbar>
-      </AppBar>
+            {isMobile ? (
+              <IconButton edge="end" color="inherit" onClick={toggleDrawer}>
+                <MenuIcon />
+              </IconButton>
+            ) : (
+              <Box sx={{ display: 'flex', gap: 3 }}>
+                {navItems.map(({ label, path }) => (
+                  <Link
+                    key={path}
+                    to={path}
+                    component={RouterLink}
+                    underline="none"
+                    color={location.pathname === path ? 'primary.main' : 'text.primary'}
+                    fontWeight={location.pathname === path ? 'bold' : 'normal'}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </Box>
+            )}
+          </Toolbar>
+        </AppBar>
+      </Box>
 
       <Drawer
         anchor="right"
@@ -115,9 +115,6 @@ const Header = () => {
       >
         {drawer}
       </Drawer>
-
-      {/* Space below AppBar */}
-      <Toolbar />
     </>
   );
 };
