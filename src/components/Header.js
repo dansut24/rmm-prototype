@@ -1,138 +1,100 @@
-import React, { useState } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import React from 'react';
 import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
   Box,
-  Link,
-  Collapse,
-  useTheme,
-  useMediaQuery
+  Typography,
+  Container,
+  Grid,
+  Button,
+  Card,
+  CardContent,
+  CardMedia
 } from '@mui/material';
 
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
-import InfoIcon from '@mui/icons-material/Info';
-import BuildIcon from '@mui/icons-material/Build';
-import ContactMailIcon from '@mui/icons-material/ContactMail';
-
-const navItems = [
-  { label: 'Home', path: '/', icon: <HomeIcon fontSize="small" /> },
-  { label: 'About', path: '/about', icon: <InfoIcon fontSize="small" /> },
-  { label: 'Services', path: '/services', icon: <BuildIcon fontSize="small" /> },
-  { label: 'Contact', path: '/contact', icon: <ContactMailIcon fontSize="small" /> }
-];
-
-const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const theme = useTheme();
-  const location = useLocation();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const toggleMenu = () => setMenuOpen(prev => !prev);
-
+const Home = () => {
   return (
-    <>
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-        <AppBar
-          position="static"
-          elevation={4}
-          sx={{
-            width: '90%',
-            borderRadius: 3,
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary
-          }}
-        >
-          <Toolbar sx={{ minHeight: 48, px: 2 }}>
-            {/* Logo Placeholder */}
-            <Box
-              sx={{
-                width: 32,
-                height: 32,
-                backgroundColor: 'grey.400',
-                borderRadius: '50%',
-                mr: 2
-              }}
-            />
-
-            {/* App Name */}
-            <Typography
-              variant="h6"
-              component={RouterLink}
-              to="/"
-              sx={{
-                textDecoration: 'none',
-                color: 'inherit',
-                fontWeight: 'bold',
-                flexGrow: 1
-              }}
-            >
-              Hi5TechRMM
-            </Typography>
-
-            {/* Nav or Hamburger */}
-            {isMobile ? (
-              <IconButton onClick={toggleMenu} color="inherit">
-                {menuOpen ? <CloseIcon /> : <MenuIcon />}
-              </IconButton>
-            ) : (
-              <Box sx={{ display: 'flex', gap: 3 }}>
-                {navItems.map(({ label, path, icon }) => (
-                  <Link
-                    key={path}
-                    to={path}
-                    component={RouterLink}
-                    underline="none"
-                    color={location.pathname === path ? 'primary.main' : 'text.primary'}
-                    fontWeight={location.pathname === path ? 'bold' : 'normal'}
-                    sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
-                  >
-                    {icon}
-                    {label}
-                  </Link>
-                ))}
-              </Box>
-            )}
-          </Toolbar>
-
-          {/* Mobile Drawer Below Header */}
-          <Collapse in={menuOpen} timeout="auto" unmountOnExit>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: 2,
-                px: 3,
-                py: 2,
-                backgroundColor: theme.palette.background.default
-              }}
-            >
-              {navItems.map(({ label, path, icon }) => (
-                <Link
-                  key={path}
-                  to={path}
-                  component={RouterLink}
-                  underline="none"
-                  onClick={toggleMenu}
-                  color={location.pathname === path ? 'primary.main' : 'text.primary'}
-                  fontWeight={location.pathname === path ? 'bold' : 'normal'}
-                  sx={{ display: 'flex', alignItems: 'center', gap: 1, fontSize: '1.2rem' }}
-                >
-                  {icon}
-                  {label}
-                </Link>
-              ))}
-            </Box>
-          </Collapse>
-        </AppBar>
+    <Container maxWidth="lg" sx={{ mt: 6 }}>
+      {/* Hero Section */}
+      <Box textAlign="center" sx={{ mb: 6 }}>
+        <Typography variant="h3" fontWeight="bold" gutterBottom>
+          Powerful Remote Monitoring & Management
+        </Typography>
+        <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
+          Secure. Scalable. Built for modern IT teams.
+        </Typography>
+        <Button variant="contained" color="primary" size="large">
+          Get Started
+        </Button>
       </Box>
-    </>
+
+      {/* Features Section */}
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={4}>
+          <Card sx={{ height: '100%' }}>
+            <CardMedia
+              component="img"
+              height="180"
+              image="https://source.unsplash.com/featured/?monitoring"
+              alt="Device Monitoring"
+            />
+            <CardContent>
+              <Typography variant="h6" fontWeight="bold">
+                Real-Time Monitoring
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Stay ahead with live insights into your devices, networks, and system health.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card sx={{ height: '100%' }}>
+            <CardMedia
+              component="img"
+              height="180"
+              image="https://source.unsplash.com/featured/?remote,access"
+              alt="Remote Access"
+            />
+            <CardContent>
+              <Typography variant="h6" fontWeight="bold">
+                Unattended Remote Access
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Instantly connect to remote endpoints and support your users from anywhere.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card sx={{ height: '100%' }}>
+            <CardMedia
+              component="img"
+              height="180"
+              image="https://source.unsplash.com/featured/?patch,security"
+              alt="Patching Automation"
+            />
+            <CardContent>
+              <Typography variant="h6" fontWeight="bold">
+                Automated Patching
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Keep systems secure and up to date with scheduled or on-demand patching.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* CTA */}
+      <Box textAlign="center" sx={{ mt: 8 }}>
+        <Typography variant="h5" gutterBottom>
+          Ready to simplify your IT operations?
+        </Typography>
+        <Button variant="contained" color="secondary" size="large">
+          Book a Demo
+        </Button>
+      </Box>
+    </Container>
   );
 };
 
-export default Header;
+export default Home;
