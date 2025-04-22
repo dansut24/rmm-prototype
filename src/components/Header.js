@@ -11,14 +11,19 @@ import {
   useTheme,
   useMediaQuery
 } from '@mui/material';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
+import BuildIcon from '@mui/icons-material/Build';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 
 const navItems = [
-  { label: 'Home', path: '/' },
-  { label: 'About', path: '/about' },
-  { label: 'Services', path: '/services' },
-  { label: 'Contact', path: '/contact' }
+  { label: 'Home', path: '/', icon: <HomeIcon fontSize="small" /> },
+  { label: 'About', path: '/about', icon: <InfoIcon fontSize="small" /> },
+  { label: 'Services', path: '/services', icon: <BuildIcon fontSize="small" /> },
+  { label: 'Contact', path: '/contact', icon: <ContactMailIcon fontSize="small" /> }
 ];
 
 const Header = () => {
@@ -45,7 +50,6 @@ const Header = () => {
           <Toolbar sx={{ minHeight: 48, px: 2 }}>
             {/* Logo Placeholder */}
             <Box
-              component="div"
               sx={{
                 width: 32,
                 height: 32,
@@ -77,7 +81,7 @@ const Header = () => {
               </IconButton>
             ) : (
               <Box sx={{ display: 'flex', gap: 3 }}>
-                {navItems.map(({ label, path }) => (
+                {navItems.map(({ label, path, icon }) => (
                   <Link
                     key={path}
                     to={path}
@@ -85,7 +89,9 @@ const Header = () => {
                     underline="none"
                     color={location.pathname === path ? 'primary.main' : 'text.primary'}
                     fontWeight={location.pathname === path ? 'bold' : 'normal'}
+                    sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
                   >
+                    {icon}
                     {label}
                   </Link>
                 ))}
@@ -99,13 +105,14 @@ const Header = () => {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
+                alignItems: 'center',
                 gap: 2,
                 px: 3,
                 py: 2,
                 backgroundColor: theme.palette.background.default
               }}
             >
-              {navItems.map(({ label, path }) => (
+              {navItems.map(({ label, path, icon }) => (
                 <Link
                   key={path}
                   to={path}
@@ -114,7 +121,9 @@ const Header = () => {
                   onClick={toggleMenu}
                   color={location.pathname === path ? 'primary.main' : 'text.primary'}
                   fontWeight={location.pathname === path ? 'bold' : 'normal'}
+                  sx={{ display: 'flex', alignItems: 'center', gap: 1, fontSize: '1.2rem' }}
                 >
+                  {icon}
                   {label}
                 </Link>
               ))}
